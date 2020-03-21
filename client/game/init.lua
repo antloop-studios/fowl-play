@@ -9,7 +9,7 @@ e, c, s     = unpack(libs.ecs)
 require "game/ecs"
 
 function game:enter()
-    self.camera = libs.camera(0, 0, 2, 2)
+    self.camera = libs.camera(0, 0, 2, 0)
     self.world  = libs.bump.newWorld(64)
     self.input  = libs.baton.new {
         controls = {
