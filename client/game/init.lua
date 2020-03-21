@@ -6,6 +6,8 @@ game = {
 local level = require "game/level"
 e, c, s     = unpack(libs.ecs)
 
+love.graphics.setDefaultFilter("nearest", "nearest")
+
 spritesheet = libs.shits:load("res/sheets/colored.png", 16)
 spritesheet:name(25, 0, "player")
 
