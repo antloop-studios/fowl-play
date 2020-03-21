@@ -1,4 +1,4 @@
-e.player = { "position", "size", "color", "player" }
+e.player = { "position", "size", "player", "sprite" }
 
 s.player = { "position", "size", "player" }
 s.player.update = function(i, position, size, player)

@@ -6,10 +6,14 @@ game = {
 local level = require "game/level"
 e, c, s     = unpack(libs.ecs)
 
+spritesheet = libs.shits:load("res/sheets/colored.png", 16)
+spritesheet:name(25, 0, "player")
+
 require "game/ecs"
 
+
 function game:enter()
-    self.camera = libs.camera(0, 0, 2, 0)
+    self.camera = libs.camera(0, 0, 3, 0)
     self.world  = libs.bump.newWorld(64)
     self.input  = libs.baton.new {
         controls = {
@@ -42,7 +46,7 @@ end
 function game:draw()
     self.camera:attach()
 
-    s(s.block)
+    s(s.block, s.sprite)
 
     self.camera:detach()
 end

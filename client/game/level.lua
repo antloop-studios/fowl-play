@@ -43,9 +43,9 @@ function level:spawn(k, x, y)
 
     if k == "player" then
         local conf = {
-            position = {x = x, y = y},
-            size     = {w = 20, h = 20},
-            color    = {0, 1, 0},
+            position = { x = x, y = y    },
+            size     = { w = 20, h = 20  },
+            sprite   = { name = "player" },
             player   = {}
         }
 
