@@ -8,7 +8,7 @@ e, c, s     = unpack(libs.ecs)
 
 love.graphics.setDefaultFilter("nearest", "nearest")
 
-spritesheet = libs.shits:load("res/sheets/colored.png", 16)
+spritesheet = libs.shits:load("res/sheets/monochrome_transparent.png", 16)
 spritesheet:name(25, 0, "player")
 
 require "game/ecs"

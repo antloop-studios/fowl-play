@@ -1,5 +1,5 @@
 local level = {
-    size = 20,
+    size = 16,
     registry = {
         block  = {0, 0, 0},
         player = {0, 1, 0}
@@ -32,7 +32,7 @@ function level:spawn(k, x, y)
     if k == "block" then
         local conf = {
             position = {x = x, y = y},
-            size     = {w = 20, h = 20},
+            size     = {w = self.size, h = self.size},
             color    = {0, 0, 0}
         }
 
@@ -44,8 +44,8 @@ function level:spawn(k, x, y)
     if k == "player" then
         local conf = {
             position = { x = x, y = y    },
-            size     = { w = 20, h = 20  },
-            sprite   = { name = "player" },
+            size     = { w = self.size, h = self.size  },
+            sprite   = { name = "player", color = { 0, 1, 0 } },
             player   = {}
         }
 

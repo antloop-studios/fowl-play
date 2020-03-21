@@ -2,7 +2,7 @@ s.sprite = {"position", "size", "sprite"}
 s.sprite.draw = function(i, position, size, sprite)
     local quad = spritesheet:get(sprite.name)
 
-    love.graphics.setColor(1, 1, 1)
+    love.graphics.setColor(sprite.color)
     love.graphics.draw(
         spritesheet.image,
         quad,
