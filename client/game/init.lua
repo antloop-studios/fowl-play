@@ -1,6 +1,12 @@
-local game = {
-    entities = {}
+game = {
+    dt = 0
 }
+
+
+local level = require "game/level"
+e, c, s     = unpack(libs.ecs)
+
+require "game/ecs"
 
 function game:enter()
     self.camera = libs.camera(0, 0)
@@ -17,15 +23,21 @@ function game:enter()
         },
         joystick = love.joystick.getJoysticks()[1],
     }
+
+    level:load("res/the_island.png")
 end
 
 function game:update(dt)
+    self.dt = dt
     self.input:update()
+
+    s(s.player)
 end
 
 function game:draw()
     self.camera:attach()
 
+    s(s.block)
 
     self.camera:detach()
 end
