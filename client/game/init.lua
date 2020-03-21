@@ -17,6 +17,7 @@ function game:enter()
             right = {'key:d', 'axis:leftx+', 'button:dpright'},
             up    = {'key:w', 'axis:lefty-', 'button:dpup'   },
             down  = {'key:s', 'axis:lefty+', 'button:dpdown' },
+            quit  = {'key:escape'}
         },
         pairs = {
             move = {'left', 'right', 'up', 'down'}
@@ -30,6 +31,10 @@ end
 function game:update(dt)
     self.dt = dt
     self.input:update()
+
+    if self.input:get("quit") == 1 then
+        love.event.quit()
+    end
 
     s(s.player)
 end
