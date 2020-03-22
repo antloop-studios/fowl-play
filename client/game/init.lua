@@ -13,7 +13,6 @@ spritesheet:name(25, 0, "player")
 
 require "game/ecs"
 
-
 function game:enter()
     self.camera = libs.camera(0, 0, 3, 0)
     self.world  = libs.bump.newWorld(64)

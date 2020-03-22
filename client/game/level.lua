@@ -46,7 +46,8 @@ function level:spawn(k, x, y)
             position = { x = x, y = y    },
             size     = { w = self.size, h = self.size  },
             sprite   = { name = "player", color = { 0, 1, 0 } },
-            player   = {}
+            player   = {},
+            movement = { dx = 0, dy = 0, friction = 10 }
         }
 
         local id = e.player(conf)

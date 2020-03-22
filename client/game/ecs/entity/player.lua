@@ -1,6 +1,6 @@
-e.player = { "position", "size", "player", "sprite" }
+e.player = { "position", "size", "player", "sprite", "movement" }
 
-s.player = { "position", "size", "player" }
+s.player = { "position", "size", "player", "movement" }
 s.player.update = function(i, position, size, player)
     move_camera(position.x, position.y)
 
@@ -11,15 +11,15 @@ s.player.update = function(i, position, size, player)
         len = 1
     end
 
-    local dx = (x / len) * 100 * game.dt
-    local dy = (y / len) * 100 * game.dt
+    local dx = (x / len) * 80 * game.dt
+    local dy = (y / len) * 80 * game.dt
 
     position.x, position.y, collisions = game.world:move(i, position.x + dx, position.y + dy)
 end
 
 function move_camera(x, y)
     local speed = 10
-    local radius_to_player = 2
+    local radius_to_player = 0
 
     local cx, cy = game.camera.x, game.camera.y
 

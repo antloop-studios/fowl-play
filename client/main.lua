@@ -1,3 +1,5 @@
+require "libs/autobatch"
+
 require "utils"
 libs = require "libs"
 
