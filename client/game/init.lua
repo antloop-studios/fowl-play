@@ -43,6 +43,9 @@ function game:enter()
         joystick = love.joystick.getJoysticks()[1]
     }
 
+    self.w = love.graphics.getWidth()
+    self.h = love.graphics.getHeight()
+
     self.entities = {}
     self.teams = {}
     self.hit = false
@@ -114,12 +117,17 @@ function game:draw()
         love.graphics.print(v.msg, 16, 20 + 14 * i)
     end
 
+    love.graphics.setColor(255, 255, 255)
+    if self.teams.red and self.teams.blue then
+        love.graphics.print("RED: " .. self.teams.red.score .. " BLUE: " ..
+                                self.teams.blue.score, self.w / 2 - 80, 20)
+    end
+
     love.graphics.setColor(1, 1, 1)
-    love.graphics.print("FPS  " .. love.timer.getFPS(),
-                        love.graphics.getWidth() - 80, 30)
+    love.graphics.print("FPS  " .. love.timer.getFPS(), self.w - 80, 30)
     if self.entities[self.uid] then
         love.graphics.print("ping " .. self.entities[self.uid].ping .. "ms",
-                            love.graphics.getWidth() - 80, 46)
+                            self.w - 80, 46)
     end
 end
 

@@ -1,3 +1,4 @@
 return function(self, event)
-    game:send_log("egg captured!")
+    self.teams = event.teams
+    game:send_log(event.capturedTeam .. " egg is being carried away!")
 end

@@ -10,7 +10,10 @@ config = {server = "fowl2.antloop.world:5700"}
 teamSpawn = {red = {x = 0, y = 0}, blue = {x = 255, y = 255}}
 
 local entities = {}
-local teams = {red = {players = 0, score = 0}, blue = {players = 0, score = 0}}
+local teams = {
+    red = {players = 0, score = 0, capturing = false},
+    blue = {players = 0, score = 0, capturing = false}
+}
 local teamColor = {red = {0.8, 0.1, 0.05}, blue = {0.05, 0.1, 0.8}}
 
 function love.load(args)
@@ -45,19 +48,25 @@ function love.update()
                     local other = collisions[c].other
 
                     if type(other) == 'table' then
-                        if other.type == 'egg' and other.team ~= player.team then
+                        if other.type == 'egg' and other.team ~= player.team and
+                            not player.hasEgg then
+
                             player.hasEgg = true
+                            teams[player.team].capturing = true
+
                             queue[#queue + 1] =
                                 {
                                     type = 'capture',
                                     uid = uid,
                                     teams = teams,
-                                    entities = entities
+                                    capturedTeam = other.team
                                 }
 
                         elseif other.type == 'chick' and other.team ==
-                            player.team and teams[player.team].carrier == uid then
+                            player.team and player.hasEgg then
+
                             player.hasEgg = false
+                            teams[player.team].capturing = false
 
                             teams[player.team].score =
                                 teams[player.team].score + 1
@@ -67,7 +76,8 @@ function love.update()
                                     type = 'goal',
                                     uid = uid,
                                     teams = teams,
-                                    entities = entities
+                                    capturedTeam = other.team == 'blue' and
+                                        'red' or 'blue'
                                 }
                         end
                     end
@@ -184,13 +194,10 @@ function love.update()
 
         elseif event.type == "disconnect" then
             local uid = event.peer:index()
-            print(dump(entities[uid]))
 
             teams[entities[uid].player.team].players =
                 teams[entities[uid].player.team].players - 1
-
             entities[uid] = nil
-
             world:remove(uid)
 
             queue[#queue + 1] = {type = 'despawn', uid = uid}
