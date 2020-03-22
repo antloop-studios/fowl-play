@@ -78,7 +78,12 @@ function love.update()
                                         player = {life = 3}
                                     }
                             end
-                            queue[#queue + 1] = {type = 'hit', uid = i}
+                            queue[#queue + 1] =
+                                {
+                                    type = 'hit',
+                                    uid = i,
+                                    life = entities[i].player.life
+                                }
                         end
                     end
                 end
