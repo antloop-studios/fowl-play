@@ -54,11 +54,9 @@ function game:enter()
 end
 
 function game:send_log(msg, color)
-    table.insert(self.log, { msg = msg, color = color })
+    table.insert(self.log, {msg = msg, color = color})
 
-    if #self.log > 5 then
-        table.remove(self.log, 1)
-    end
+    if #self.log > 5 then table.remove(self.log, 1) end
 end
 
 function game:update(dt)
@@ -106,9 +104,9 @@ function game:draw()
     love.graphics.rectangle("fill", 12, 30, 220, 16 * 5)
 
     for i, v in ipairs(self.log) do
-        local color = { 1, 1, 1, i / #self.log }
+        local color = {1, 1, 1, i / #self.log}
         if v.color then
-            color = { v.color[1], v.color[2], v.color[3], i / #self.log }
+            color = {v.color[1], v.color[2], v.color[3], i / #self.log}
         end
 
         love.graphics.setColor(color)
@@ -117,7 +115,12 @@ function game:draw()
     end
 
     love.graphics.setColor(1, 1, 1)
-    love.graphics.print("FPS  " .. love.timer.getFPS(), love.graphics.getWidth() - 80, 30)
+    love.graphics.print("FPS  " .. love.timer.getFPS(),
+                        love.graphics.getWidth() - 80, 30)
+    if self.entities[self.uid] then
+        love.graphics.print("ping " .. self.entities[self.uid].ping .. "ms",
+                            love.graphics.getWidth() - 80, 46)
+    end
 end
 
 function game:leave() self.server:disconnect() end
