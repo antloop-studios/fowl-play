@@ -126,8 +126,8 @@ function love.update()
                                             type = 'restore',
                                             uid = uid,
                                             teams = teams,
-                                            capturedTeam = other.team == 'blue' and
-                                                'red' or 'blue'
+                                            capturedTeam = entity.player.team ==
+                                                'blue' and 'red' or 'blue'
                                         }
                                 end
                                 world:update(i, teamSpawn[entity.player.team].x,
