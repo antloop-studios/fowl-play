@@ -117,13 +117,16 @@ function love.update()
                         if math.distance(px, py, ex, ey) < 32 and hit then
                             entity.hearts.hp = entity.hearts.hp - 1
 
-                            if entity.hearts.hp == 0 then
+                            if entity.hearts.hp <= 0 then
                                 world:update(i, teamSpawn[entity.player.team].x,
                                              teamSpawn[entity.player.team].y)
                                 entities[i] =
                                     {
                                         ping = event.peer:round_trip_time(),
-                                        position = teamSpawn[entity.player.team],
+                                        position = {
+                                            x = teamSpawn[entity.player.team].x,
+                                            y = teamSpawn[entity.player.team].y
+                                        },
                                         size = {w = 16, h = 16},
                                         player = {
                                             team = entity.player.team,
@@ -145,12 +148,10 @@ function love.update()
                                         uid = i,
                                         hp = entity.hearts.hp
                                     }
-                                entities[uid].position.x =
-                                    entities[uid].position.x +
-                                        math.random(-5, 5)
-                                entities[uid].position.y =
-                                    entities[uid].position.y +
-                                        math.random(-5, 5)
+                                entities[i].position.x =
+                                    entities[i].position.x + math.random(-5, 5)
+                                entities[i].position.y =
+                                    entities[i].position.y + math.random(-5, 5)
                                 queue[#queue + 1] =
                                     {type = 'move', entities = entities}
                             end
