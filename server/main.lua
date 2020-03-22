@@ -96,7 +96,7 @@ function love.update()
     if f_update then
         f_update = false
 
-        host:broadcast(ser.s({event='move',entities=entities}))
+        host:broadcast(ser.s({event='move',entities=entities}), 0, "unsequenced")
     end
 
 end
