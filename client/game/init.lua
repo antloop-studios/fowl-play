@@ -104,7 +104,7 @@ function game:draw()
     self.camera:detach()
 
     love.graphics.setColor(0, 0, 0, 0.25)
-    love.graphics.rectangle("fill", 12, 30, 220, 16 * 5)
+    love.graphics.rectangle("fill", 12, 20, 228, 16 * 5)
 
     for i, v in ipairs(self.log) do
         local color = {1, 1, 1, i / #self.log}
@@ -114,13 +114,13 @@ function game:draw()
 
         love.graphics.setColor(color)
 
-        love.graphics.print(v.msg, 16, 20 + 14 * i)
+        love.graphics.print(v.msg, 16, 10 + 14 * i)
     end
 
     love.graphics.setColor(255, 255, 255)
     if self.teams.red and self.teams.blue then
-        love.graphics.print("RED: " .. self.teams.red.score .. " BLUE: " ..
-                                self.teams.blue.score, self.w / 2 - 80, 20)
+        love.graphics.print("RED: " .. self.teams.red.score, self.w / 2 - 20, 20)
+        love.graphics.print("BLUE: " .. self.teams.blue.score, self.w / 2 - 20, 40)
     end
 
     love.graphics.setColor(1, 1, 1)
