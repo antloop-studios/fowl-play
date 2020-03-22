@@ -23,6 +23,12 @@ s.cplayer.update = function(i, position, size, pointer)
         local dx = math.cos(pointer.angle) * 16
         local dy = math.sin(pointer.angle) * 16
         game.server:send(ser.s({event = 'punch', dx = dx, dy = dy}))
+
+        e.punch({
+            position = {x = position.x + size.w / 2, y = position.y + size.h / 2},
+            size     = {w = 16, h = 16},
+            punch    = {angle = pointer.angle, scale = 1}
+        })
     end
 end
 

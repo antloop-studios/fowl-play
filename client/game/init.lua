@@ -10,11 +10,10 @@ e, c, s     = unpack(libs.ecs)
 love.graphics.setDefaultFilter("nearest", "nearest")
 
 spritesheet = libs.shits:load("res/sheets/monochrome_transparent.png", 16)
-spritesheet:name(25, 0, "player")
-spritesheet:name(3, 1, "tree")
+spritesheet:name(25, 0,  "player")
+spritesheet:name(3, 1,   "tree")
 spritesheet:name(24, 20, "pointer")
-
-
+spritesheet:name(25, 11, "punch")
 
 require "game/ecs"
 
@@ -104,7 +103,7 @@ end
 function game:draw()
     self.camera:attach()
 
-    s(s.dirt, s.sprite, s.pointer)
+    s(s.dirt, s.sprite, s.pointer, s.punch)
 
     self.camera:detach()
 
