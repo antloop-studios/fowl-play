@@ -109,7 +109,7 @@ function game:draw()
 
     self.camera:detach()
 
-    love.graphics.setColor(0, 0, 0)
+    love.graphics.setColor(1, 1, 1)
     love.graphics.print(dump(self.entities))
 end
 

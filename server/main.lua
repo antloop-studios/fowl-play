@@ -3,13 +3,14 @@ local ser = require "libs/binser"
 local bump = require "libs/bump"
 world  = bump.newWorld(64)
 local level = require "level"
-local entities = {}
 require "utils"
+require "libs/dump"
 
 config = {
     server = "fowl.antloop.world:5700"
 }
 
+local entities = {}
 
 function love.load(args)
     if args[1] == 'local' then
@@ -40,20 +41,25 @@ function love.update()
 
                 f_update = true
 
-            elseif event.type == 'punch' then
+            elseif data.event == 'punch' then
+                print('punch')
                 local uid = event.peer:index()
-                local px, py = entities[uid].x, entities[uid].y
+                local px, py = entities[uid].position.x, entities[uid].position.y
 
                 for i, entity in pairs(entities) do
+                    local ex, ey = entity.position.x, entity.position.y
                     if i ~= uid then
-                        local ex, ey = entity[uid].x, entity[uid].y
-                        if math.distance(px, py, ex, ey) < 16 then
-                            host.get_peer(i):reconnect()
+                        if math.distance(px, py, ex, ey) < 32 then
+                            entities[i] = {
+                                position = {x = 120, y = 260},
+                                size     = {w = 16, h = 16},
+                                player   = {},
+                            }
+                            f_update = true
                         end
                     end
                 end
 
-                f_update = true
             end
         elseif event.type == "connect" then
             local uid = event.peer:index()
