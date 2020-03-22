@@ -6,7 +6,8 @@ local level = {
         dirt = {1, 1, 1},
         chicken_blu = {0, 0, 1},
         chicken_red = {1, 0, 0},
-        egg = {1, 1, 0}
+        egg_red = {1, 1, 0},
+        egg_blu = {0, 1, 1}
     },
     map = {}
 }
@@ -73,7 +74,7 @@ function level:spawn(k, x, y)
             position = {x = x + self.size / 2, y = y},
             size = {w = self.size, h = self.size},
             sprite = {name = "chick", color = {0.1, 0.1, 0.5}, scale = 2},
-            chicken = {team = 1}
+            chicken = {team = 'blue'}
         }
 
         local id = e.chicken(conf)
@@ -86,7 +87,7 @@ function level:spawn(k, x, y)
             position = {x = x + self.size / 2, y = y},
             size = {w = self.size, h = self.size},
             sprite = {name = "chick", color = {0.5, 0, 0}, scale = 2},
-            chicken = {team = 0}
+            chicken = {team = 'red'}
         }
 
         local id = e.chicken(conf)
@@ -94,18 +95,32 @@ function level:spawn(k, x, y)
         self:make_dirt(x, y)
     end
 
-    if k == "egg" then
+    if k == "egg_red" then
         local conf = {
             position = {x = x, y = y},
             size = {w = self.size, h = self.size},
-            sprite = {name = "egg", color = {0.8, 0.8, 0.8}, scale = 1},
-            egg = {}
+            sprite = {name = "egg", color = {0.8, 0.2, 0.2}, scale = 1},
+            egg = {team = 'red'}
         }
 
         local id = e.egg(conf)
 
         self:make_dirt(x, y)
     end
+
+    if k == "egg_blu" then
+        local conf = {
+            position = {x = x, y = y},
+            size = {w = self.size, h = self.size},
+            sprite = {name = "egg", color = {0.2, 0.2, 0.8}, scale = 1},
+            egg = {team = 'blue'}
+        }
+
+        local id = e.egg(conf)
+
+        self:make_dirt(x, y)
+    end
+
 end
 
 return level

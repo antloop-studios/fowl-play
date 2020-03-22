@@ -24,6 +24,7 @@ function love.update()
     local f_update = false
 
     local queue = {}
+    local collisions
 
     while event do
         if event.type == "receive" then
@@ -122,6 +123,9 @@ function love.update()
 
         elseif event.type == "disconnect" then
             local uid = event.peer:index()
+            teams[entities[uid].player.team].players =
+                teams[entities[uid].player.team].players - 1
+            entities[uid] = nil
             world:remove(uid)
 
             queue[#queue + 1] = {type = 'despawn', uid = uid}

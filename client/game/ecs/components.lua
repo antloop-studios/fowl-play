@@ -7,5 +7,5 @@ c.controller = {}
 c.pointer = {angle = 0, radius = 0}
 c.punch = {angle = 0, scale = 0}
 c.hearts = {hp = 3}
-c.chicken = {team = 0}
-c.egg = {}
+c.chicken = {team = 'red'}
+c.egg = {team = 'red'}
