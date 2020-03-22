@@ -1,4 +1,4 @@
-game = {dt = 0, uid = 0, hit = false}
+game = {dt = 0, uid = 0, hit = false, log = {}}
 
 local level = require "game/level"
 e, c, s = unpack(libs.ecs)
@@ -52,6 +52,14 @@ function game:enter()
     level:load("res/the_island.png")
 end
 
+function game:send_log(msg, color)
+    table.insert(self.log, { msg = msg, color = color })
+
+    if #self.log > 5 then
+        table.remove(self.log, 1)
+    end
+end
+
 function game:update(dt)
     libs.shack:update(dt)
     self.dt = dt
@@ -89,8 +97,19 @@ function game:draw()
 
     self.camera:detach()
 
-    love.graphics.setColor(1, 1, 1)
-    love.graphics.print(dump(self.entities))
+    love.graphics.setColor(0, 0, 0, 0.25)
+    love.graphics.rectangle("fill", 12, 40, 220, 16 * 5)
+
+    for i, v in ipairs(self.log) do
+        local color = { 1, 1, 1, i / #self.log }
+        if v.color then
+            color = { v.color[1], v.color[2], v.color[3], i / #self.log }
+        end
+
+        love.graphics.setColor(color)
+
+        love.graphics.print(v.msg, 16, 30 + 14 * i)
+    end
 end
 
 function game:leave() self.server:disconnect() end

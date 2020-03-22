@@ -12,4 +12,6 @@ return function(self, event)
         end
         self.entities[i] = {e = e.get(id), id = id}
     end
+
+    game:send_log("[server] player joined the game", { 0, 1, 0})
 end
