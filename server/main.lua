@@ -107,13 +107,19 @@ function love.update()
                             entity.hearts.hp = entity.hearts.hp - 1
 
                             if entity.hearts.hp == 0 then
-                                entities[uid] =
+                                entities[i] =
                                     {
+                                        ping = event.peer:round_trip_time(),
                                         position = {x = 120, y = 260},
                                         size = {w = 16, h = 16},
                                         player = {
-                                            team = entity.team,
+                                            team = entity.player.team,
                                             hasEgg = false
+                                        },
+                                        sprite = {
+                                            name = 'player',
+                                            color = teamColor[entity.player.team],
+                                            scale = 1
                                         },
                                         hearts = {hp = 3}
                                     }
@@ -126,6 +132,14 @@ function love.update()
                                         uid = i,
                                         hp = entity.hearts.hp
                                     }
+                                entities[uid].position.x =
+                                    entities[uid].position.x +
+                                        math.random(-5, 5)
+                                entities[uid].position.y =
+                                    entities[uid].position.y +
+                                        math.random(-5, 5)
+                                queue[#queue + 1] =
+                                    {type = 'move', entities = entities}
                             end
                         end
                     end
@@ -144,7 +158,7 @@ function love.update()
                 position = {x = 120, y = 260},
                 size = {w = 16, h = 16},
                 player = {team = team, hasEgg = false},
-                sprite = {color = teamColor[team]},
+                sprite = {name = 'player', color = teamColor[team], scale = 1},
                 hearts = {hp = 3}
             }
 

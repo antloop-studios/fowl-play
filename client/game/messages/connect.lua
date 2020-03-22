@@ -5,8 +5,6 @@ return function(self, event)
     for i, entity in pairs(event.entities) do
         local id, ping
         if i ~= self.uid then
-            local color = entity.sprite.color
-            entity.sprite = {name = "player", color = color, scale = 1}
             ping = entity.ping
             entity.ping = nil
             id = e.player(entity)

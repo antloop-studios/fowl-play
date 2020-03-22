@@ -1,7 +1,9 @@
 -- (c)ontrolled player
-e.cplayer = {"position", "size", "player", "sprite", "controller", "pointer", "hearts"}
+e.cplayer = {
+    "position", "size", "player", "sprite", "controller", "pointer", "hearts"
+}
 
-s.cplayer = {"position", "size", "pointer", "hearts", "player", "controller" }
+s.cplayer = {"position", "size", "pointer", "hearts", "player", "controller"}
 s.cplayer.update = function(i, position, size, pointer, hearts, player)
     move_camera(position.x, position.y)
 
@@ -19,7 +21,12 @@ s.cplayer.update = function(i, position, size, pointer, hearts, player)
     if game.input:pressed("punch") then
         local dx = math.cos(pointer.angle) * 16
         local dy = math.sin(pointer.angle) * 16
-        game.server:send(ser.s({event = 'punch', dx = dx, dy = dy, angle = pointer.angle}))
+        game.server:send(ser.s({
+            event = 'punch',
+            dx = dx,
+            dy = dy,
+            angle = pointer.angle
+        }))
 
         e.punch({
             position = {
@@ -31,11 +38,7 @@ s.cplayer.update = function(i, position, size, pointer, hearts, player)
         })
     end
 
-    if game.hit then
-        game.server:send(ser.s({event='move', x=math.random(-5, 5), y=math.random(-5, 5)}))
-
-        game.hit = false
-    end
+    if game.hit then game.hit = false end
 end
 
 function move_camera(x, y)
