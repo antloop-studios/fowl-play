@@ -43,7 +43,8 @@ function love.update()
                     event = 'punch',
                     uid = uid,
                     dx = data.dx,
-                    dy = data.dy
+                    dy = data.dy,
+                    angle = data.angle
                 })
 
                 local uid = event.peer:index()
