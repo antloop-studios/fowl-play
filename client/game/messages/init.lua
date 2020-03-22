@@ -5,5 +5,7 @@ return {
     despawn = require(m .. "despawn"),
     move = require(m .. "move"),
     hit = require(m .. "hit"),
-    punch = require(m .. "punch")
+    punch = require(m .. "punch"),
+    capture = require(m .. "capture"),
+    goal = require(m .. "goal")
 }

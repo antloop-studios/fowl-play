@@ -14,4 +14,5 @@ return function(self, event)
     end
 
     game:send_log("[server] player joined the game", { 0, 1, 0})
+    self.teams = event.teams
 end
