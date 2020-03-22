@@ -81,6 +81,7 @@ function game:update(dt)
 
             elseif data.event == 'move' then
                 for i, entity in pairs(data.entities) do
+                    self.entities[i].ping = entity.ping
                     self.entities[i].e.position.x = entity.position.x
                     self.entities[i].e.position.y = entity.position.y
                 end

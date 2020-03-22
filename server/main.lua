@@ -35,6 +35,8 @@ function love.update()
                 local position = entities[uid].position
 
                 position.x, position.y, collisions = world:move(uid, position.x + dx, position.y + dy)
+
+                entities[uid].ping = event.peer:round_trip_time()
                 f_update = true
             end
         elseif event.type == "connect" then
@@ -85,7 +87,7 @@ function love.update()
 
             print("disconnected: ", event.peer, uid)
 
-                f_update = true
+            f_update = true
 
         end
         event = host:service()
