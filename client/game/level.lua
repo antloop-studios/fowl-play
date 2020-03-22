@@ -56,8 +56,8 @@ function level:spawn(k, x, y)
             position = {x = x, y = y},
             size = {w = self.size, h = self.size},
             sprite = {
-                name = "tree" .. math.random(1, 3),
-                color = tree_colors[math.random(1, #tree_colors)],
+                name = "tree" .. love.math.random(1, 3),
+                color = tree_colors[love.math.random(1, #tree_colors)],
                 scale = 1
             }
         }

@@ -1,20 +1,27 @@
 local enet = require "enet"
-local ser = require "libs/binser"
+ser = require "libs/binser"
 local bump = require "libs/bump"
-world = bump.newWorld(64)
 local level = require "level"
 require "utils"
 require "libs/dump"
-
+local messageHandler = require "messages"
 config = {server = "fowl2.antloop.world:5700"}
-teamSpawn = {red = {x = 0, y = 0}, blue = {x = 255, y = 255}}
 
-local entities = {}
-local teams = {
-    red = {players = 0, score = 0, capturing = false},
-    blue = {players = 0, score = 0, capturing = false}
+game = {
+    queueLossy = {},
+    queueReliable = {},
+
+    teamSpawn = {red = {x = 0, y = 0}, blue = {x = 255, y = 255}},
+    teamColor = {red = {0.8, 0.1, 0.05}, blue = {0.05, 0.1, 0.8}},
+
+    teams = {
+        red = {players = 0, score = 0, capturing = false},
+        blue = {players = 0, score = 0, capturing = false}
+    },
+
+    world = bump.newWorld(64),
+    entities = {}
 }
-local teamColor = {red = {0.8, 0.1, 0.05}, blue = {0.05, 0.1, 0.8}}
 
 function love.load(args)
     if args[1] == 'local' then config.server = "localhost:5700" end
@@ -25,201 +32,32 @@ end
 
 function love.update()
     local event = host:service(100)
-    local f_update = false
 
-    local queue = {}
-    local collisions, count
+    game.queueLossy = {}
+    game.queueReliable = {}
 
     while event do
+        local uid = event.peer:index()
+
         if event.type == "receive" then
-            local data = ser.d(event.data)[1]
-            local uid = event.peer:index()
-
-            if data.event == 'move' then
-                local dx = 1 * (data.x == 0 and 0 or data.x > 0 and 1 or -1)
-                local dy = 1 * (data.y == 0 and 0 or data.y > 0 and 1 or -1)
-                local position = entities[uid].position
-                local player = entities[uid].player
-
-                position.x, position.y, collisions, count =
-                    world:move(uid, position.x + dx, position.y + dy)
-
-                for c = 1, count do
-                    local other = collisions[c].other
-
-                    if type(other) == 'table' then
-                        if other.type == 'egg' and other.team ~= player.team and
-                            not player.hasEgg and
-                            not teams[player.team].capturing then
-
-                            player.hasEgg = true
-                            teams[player.team].capturing = true
-
-                            queue[#queue + 1] =
-                                {
-                                    type = 'capture',
-                                    uid = uid,
-                                    teams = teams,
-                                    capturedTeam = other.team
-                                }
-
-                        elseif other.type == 'chick' and other.team ==
-                            player.team and player.hasEgg then
-
-                            player.hasEgg = false
-                            teams[player.team].capturing = false
-
-                            teams[player.team].score =
-                                teams[player.team].score + 1
-
-                            queue[#queue + 1] =
-                                {
-                                    type = 'goal',
-                                    uid = uid,
-                                    teams = teams,
-                                    capturedTeam = other.team == 'blue' and
-                                        'red' or 'blue'
-                                }
-                        end
-                    end
+            local messages = ser.d(event.data)[1]
+            for i, message in ipairs(messages) do
+                if messageHandler[message.type] then
+                    messageHandler[message.type](uid, event.peer, message)
+                else
+                    print('unhandled event type', message.type)
                 end
-
-                entities[uid].ping = event.peer:round_trip_time()
-
-                queue[#queue + 1] = {type = 'move', entities = entities}
-
-            elseif data.event == 'punch' then
-                queue[#queue + 1] = {
-                    type = 'punch',
-                    uid = uid,
-                    dx = data.dx,
-                    dy = data.dy,
-                    angle = data.angle
-                }
-
-                local uid = event.peer:index()
-                local px, py = entities[uid].position.x,
-                               entities[uid].position.y
-
-                for i, entity in pairs(entities) do
-                    if i ~= uid and entity.player.team ~=
-                        entities[uid].player.team then
-                        local ex, ey = entity.position.x, entity.position.y
-
-                        local da = math.atan2(py - ey, px - ex)
-                        local dex = math.cos(da) * 16
-                        local dey = math.sin(da) * 16
-
-                        local hx = data.dx + dex
-                        local hy = data.dy + dey
-
-                        local hit = math.abs(hx) < 10 and math.abs(hy) < 10
-
-                        if math.distance(px, py, ex, ey) < 32 and hit then
-                            entity.hearts.hp = entity.hearts.hp - 1
-
-                            if entity.hearts.hp <= 0 then
-                                if entity.player.hasEgg then
-                                    teams[entity.player.team].capturing = false
-                                    queue[#queue + 1] =
-                                        {
-                                            type = 'restore',
-                                            uid = uid,
-                                            teams = teams,
-                                            capturedTeam = entity.player.team ==
-                                                'blue' and 'red' or 'blue'
-                                        }
-                                end
-                                world:update(i, teamSpawn[entity.player.team].x,
-                                             teamSpawn[entity.player.team].y)
-                                entities[i] =
-                                    {
-                                        ping = event.peer:round_trip_time(),
-                                        position = {
-                                            x = teamSpawn[entity.player.team].x,
-                                            y = teamSpawn[entity.player.team].y
-                                        },
-                                        size = {w = 16, h = 16},
-                                        player = {
-                                            team = entity.player.team,
-                                            hasEgg = false
-                                        },
-                                        sprite = {
-                                            name = 'player',
-                                            color = teamColor[entity.player.team],
-                                            scale = 1
-                                        },
-                                        hearts = {hp = 3}
-                                    }
-                                queue[#queue + 1] =
-                                    {type = 'move', entities = entities}
-                            else
-                                queue[#queue + 1] =
-                                    {
-                                        type = 'hit',
-                                        uid = i,
-                                        hp = entity.hearts.hp
-                                    }
-                                entities[i].position.x =
-                                    entities[i].position.x + math.random(-5, 5)
-                                entities[i].position.y =
-                                    entities[i].position.y + math.random(-5, 5)
-                                queue[#queue + 1] =
-                                    {type = 'move', entities = entities}
-                            end
-                        end
-                    end
-                end
-
             end
         elseif event.type == "connect" then
-            local uid = event.peer:index()
-            print("connected: ", event.peer, uid)
-            local team = teams.red.players < teams.blue.players and 'red' or
-                             'blue'
-            teams[team].players = teams[team].players + 1
-
-            entities[uid] = {
-                ping = event.peer:round_trip_time(),
-                position = {x = teamSpawn[team].x, y = teamSpawn[team].y},
-                size = {w = 16, h = 16},
-                player = {team = team, hasEgg = false},
-                sprite = {name = 'player', color = teamColor[team], scale = 1},
-                hearts = {hp = 3}
-            }
-
-            local position = entities[uid].position
-            local size = entities[uid].size
-
-            world:add(uid, position.x, position.y, size.w, size.h)
-
-            event.peer:send(ser.s{
-                type = 'connect',
-                uid = uid,
-                entities = entities,
-                teams = teams
-            })
-
-            queue[#queue + 1] = {
-                type = 'spawn',
-                data = entities[uid],
-                uid = uid
-            }
-
+            messageHandler[event.type](uid, event.peer, event)
         elseif event.type == "disconnect" then
-            local uid = event.peer:index()
-
-            teams[entities[uid].player.team].players =
-                teams[entities[uid].player.team].players - 1
-            entities[uid] = nil
-            world:remove(uid)
-
-            queue[#queue + 1] = {type = 'despawn', uid = uid}
-
-            print("disconnected: ", event.peer, uid)
+            messageHandler[event.type](uid, event.peer, event)
         end
+
         event = host:service()
     end
 
-    host:broadcast(ser.s{type = 'queue', queue = queue})
+    host:broadcast(ser.s{type = 'queue', queue = game.queueReliable})
+    host:broadcast(ser.s{type = 'queue', queue = game.queueLossy}, 0,
+                   'unsequenced')
 end

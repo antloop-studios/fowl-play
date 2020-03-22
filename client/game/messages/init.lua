@@ -8,5 +8,6 @@ return {
     punch = require(m .. "punch"),
     capture = require(m .. "capture"),
     goal = require(m .. "goal"),
-    restore = require(m .. "restore")
+    restore = require(m .. "restore"),
+    death = require(m .. "death")
 }

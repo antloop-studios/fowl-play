@@ -48,12 +48,38 @@ function game:enter()
 
     self.entities = {}
     self.teams = {}
+    self.queue = {}
     self.hit = false
 
     self.host = enet.host_create()
     self.server = self.host:connect(config.server)
 
     level:load("res/the_island.png")
+
+    self.audio = {
+        ambient = love.audio.newSource("res/audio/ambient/01.wav", 'stream'),
+        death = {
+            love.audio.newSource("res/audio/death/01.mp3", "static"),
+            love.audio.newSource("res/audio/death/02.wav", "static")
+        },
+        loss = {love.audio.newSource("res/audio/loss/01.mp3", "static")},
+        move = {
+            love.audio.newSource("res/audio/move/01.wav", "static"),
+            love.audio.newSource("res/audio/move/02.wav", "static"),
+            love.audio.newSource("res/audio/move/03.wav", "static")
+        },
+        punch = {
+            love.audio.newSource("res/audio/punch/01.wav", "static"),
+            love.audio.newSource("res/audio/punch/02.wav", "static")
+        },
+        warning = {love.audio.newSource("res/audio/warning/01.wav", "static")},
+        win = {love.audio.newSource("res/audio/win/01.wav", "static")},
+        ding = {love.audio.newSource("res/audio/ding/01.wav", "static")},
+        woosh = {love.audio.newSource("res/audio/woosh/01.flac", "static")}
+    }
+
+    self.audio.ambient:setLooping(true)
+    self.audio.ambient:play()
 end
 
 function game:send_log(msg, color)
@@ -66,6 +92,7 @@ function game:update(dt)
     libs.shack:update(dt)
     self.dt = dt
     self.input:update()
+    self.queue = {}
 
     if self.input:get("quit") == 1 then
         self.server:disconnect()
@@ -73,6 +100,7 @@ function game:update(dt)
     end
 
     local event = self.host:service()
+
     while event do
         if event.type == "receive" then
             local message = ser.d(event.data)[1]
@@ -89,10 +117,13 @@ function game:update(dt)
                 end
             end
         end
+
         event = self.host:service()
     end
 
     s(s.cplayer)
+
+    self.server:send(ser.s(self.queue))
 end
 
 function game:draw()
@@ -118,16 +149,23 @@ function game:draw()
     end
 
     love.graphics.setColor(255, 255, 255)
+
     if self.teams.red and self.teams.blue then
-        love.graphics.print("RED: " .. self.teams.red.score, self.w / 2 - 20, 20)
-        love.graphics.print("BLUE: " .. self.teams.blue.score, self.w / 2 - 20, 40)
+        love.graphics
+            .print("RED: " .. self.teams.red.score, self.w / 2 - 20, 20)
+        love.graphics.print("BLUE: " .. self.teams.blue.score, self.w / 2 - 20,
+                            40)
+        love.graphics.print("Red players: " .. self.teams.red.players,
+                            self.w - 100, 62)
+        love.graphics.print("Blue players: " .. self.teams.blue.players,
+                            self.w - 100, 78)
     end
 
     love.graphics.setColor(1, 1, 1)
-    love.graphics.print("FPS  " .. love.timer.getFPS(), self.w - 80, 30)
+    love.graphics.print("FPS  " .. love.timer.getFPS(), self.w - 100, 30)
     if self.entities[self.uid] then
-        love.graphics.print("ping " .. self.entities[self.uid].ping .. "ms",
-                            self.w - 80, 46)
+        love.graphics.print("PING " .. self.entities[self.uid].ping .. "ms",
+                            self.w - 100, 46)
     end
 end
 

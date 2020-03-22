@@ -56,13 +56,13 @@ function level:spawn(k, x, y)
             sprite = {name = "chick", color = {0.1, 0.1, 0.5}, scale = 2},
             chicken = {team = 1}
         }
-        teamSpawn.blue = {
+        game.teamSpawn.blue = {
             x = conf.position.x + conf.size.w / 2,
             y = conf.position.y + conf.size.h / 2
         }
-        world:add({type = 'chick', team = 'blue'}, x, y,
-                  conf.size.w * conf.sprite.scale,
-                  conf.size.h * conf.sprite.scale)
+        game.world:add({type = 'chick', team = 'blue'}, x, y,
+                       conf.size.w * conf.sprite.scale,
+                       conf.size.h * conf.sprite.scale)
     end
 
     if k == "chicken_red" then
@@ -72,13 +72,13 @@ function level:spawn(k, x, y)
             sprite = {name = "chick", color = {0.5, 0, 0}, scale = 2},
             chicken = {team = 0}
         }
-        teamSpawn.red = {
+        game.teamSpawn.red = {
             x = conf.position.x + conf.size.w / 2,
             y = conf.position.y + conf.size.h / 2
         }
-        world:add({type = 'chick', team = 'red'}, x, y,
-                  conf.size.w * conf.sprite.scale,
-                  conf.size.h * conf.sprite.scale)
+        game.world:add({type = 'chick', team = 'red'}, x, y,
+                       conf.size.w * conf.sprite.scale,
+                       conf.size.h * conf.sprite.scale)
     end
 
     if k == "egg_red" then
@@ -89,9 +89,9 @@ function level:spawn(k, x, y)
             egg = {team = 'red'}
         }
 
-        world:add({type = 'egg', team = 'red'}, x, y,
-                  conf.size.w * conf.sprite.scale,
-                  conf.size.h * conf.sprite.scale)
+        game.world:add({type = 'egg', team = 'red'}, x, y,
+                       conf.size.w * conf.sprite.scale,
+                       conf.size.h * conf.sprite.scale)
     end
 
     if k == "egg_blu" then
@@ -102,14 +102,14 @@ function level:spawn(k, x, y)
             egg = {team = 'blue'}
         }
 
-        world:add({type = 'egg', team = 'blue'}, x, y,
-                  conf.size.w * conf.sprite.scale,
-                  conf.size.h * conf.sprite.scale)
+        game.world:add({type = 'egg', team = 'blue'}, x, y,
+                       conf.size.w * conf.sprite.scale,
+                       conf.size.h * conf.sprite.scale)
     end
 
     if conf then
-        world:add(uid, x, y, conf.size.w * conf.sprite.scale,
-                  conf.size.h * conf.sprite.scale)
+        game.world:add(uid, x, y, conf.size.w * conf.sprite.scale,
+                       conf.size.h * conf.sprite.scale)
     end
 end
 

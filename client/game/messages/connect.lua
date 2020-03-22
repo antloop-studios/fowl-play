@@ -11,7 +11,5 @@ return function(self, event)
         self.entities[i] = {e = e.get(id), id = id, ping = ping}
     end
 
-    game:send_log("[server] " .. event.entities[self.uid].player.team ..
-                      " player joined the game", {0, 1, 0})
     self.teams = event.teams
 end
