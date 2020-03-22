@@ -6,7 +6,7 @@ local level = require "level"
 require "utils"
 require "libs/dump"
 
-config = {server = "fowl.antloop.world:5700"}
+config = {server = "fowl2.antloop.world:5700"}
 
 local entities = {}
 
