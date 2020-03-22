@@ -1,7 +1,7 @@
 local enet = require "enet"
 local ser = require "libs/binser"
 local bump = require "libs/bump"
-local host = enet.host_create("localhost:5700")
+local host = enet.host_create("fowl.antloop.world:5700")
 world  = bump.newWorld(64)
 local level = require "level"
 local entities = {}

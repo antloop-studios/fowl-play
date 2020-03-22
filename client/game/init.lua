@@ -17,7 +17,7 @@ require "game/ecs"
 
 local enet = require "enet"
 ser = require "libs/binser"
-local address, port = "localhost", 5700
+local address, port = "fowl.antloop.world", 5700
 
 require "libs/dump"
 
