@@ -1,8 +1,12 @@
 local level = {
     size = 16,
     registry = {
-        block  = {0, 0, 0},
-        player = {0, 1, 0}
+        block = {0, 0, 0},
+        player = {0, 1, 0},
+        dirt = {1, 1, 1},
+        chicken_blu = {0, 0, 1},
+        chicken_red = {1, 0, 0},
+        egg = {1, 1, 0}
     },
     map = {}
 }
@@ -22,7 +26,9 @@ function level:load(path)
             local r, g, b = image:getPixel(rx, ry)
 
             for k, v in pairs(self.registry) do
-                if math.fuzzy_equals(r, v[1], 0.01) and math.fuzzy_equals(g, v[2], 0.01) and math.fuzzy_equals(b, v[3], 0.01) then
+                if math.fuzzy_equals(r, v[1], 0.01) and
+                    math.fuzzy_equals(g, v[2], 0.01) and
+                    math.fuzzy_equals(b, v[3], 0.01) then
                     self:spawn(k, self.size * rx, self.size * ry)
                 end
             end
@@ -31,30 +37,39 @@ function level:load(path)
 end
 
 function level:spawn(k, x, y)
-    if k == "block" then
-        local conf = {
-            position = {x = x, y = y},
-            size     = {w = 16, h = 16},
-            sprite   = { name = "tree", color = { 0, 1, 0 }, scale = 1.5}
-        }
+    uid = uid + 1
+    local conf
 
-        -- local id = e.block(conf)
-        uid = uid + 1
-        world:add(uid, x, y, conf.size.w, conf.size.h)
+    if k == "block" then
+        conf = {
+            position = {x = x, y = y},
+            size = {w = 16, h = 16},
+            sprite = {name = "tree", color = {0, 1, 0}, scale = 1}
+        }
     end
 
-    -- if k == "player" then
-    --     local conf = {
-    --         position = {x = x, y = y},
-    --         size     = {w = 20, h = 20},
-    --         color    = {0, 1, 0},
-    --         player   = {}
-    --     }
+    if k == "chicken_blu" then
+        conf = {
+            position = {x = x, y = y},
+            size = {w = self.size, h = self.size},
+            sprite = {name = "chick", color = {0.1, 0.1, 0.5}, scale = 2},
+            chicken = {team = 1}
+        }
+    end
 
-        -- local id = e.player(conf)
+    if k == "chicken_red" then
+        conf = {
+            position = {x = x, y = y},
+            size = {w = self.size, h = self.size},
+            sprite = {name = "chick", color = {0.5, 0, 0}, scale = 2},
+            chicken = {team = 0}
+        }
+    end
 
-        -- game.world:add(id, x, y, conf.size.w, conf.size.h)
-    -- end
+    if conf then
+        world:add(uid, x, y, conf.size.w * conf.sprite.scale,
+                  conf.size.h * conf.sprite.scale)
+    end
 end
 
 return level
