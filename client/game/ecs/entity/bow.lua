@@ -1,1 +1,0 @@
-e.bow = {"position", "bow"}

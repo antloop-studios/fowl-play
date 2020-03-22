@@ -35,7 +35,7 @@ function level:spawn(k, x, y)
         local conf = {
             position = {x = x, y = y},
             size     = {w = 16, h = 16},
-            color    = {0, 0, 0}
+            sprite   = { name = "tree", color = { 0, 1, 0 }, scale = 1.5}
         }
 
         -- local id = e.block(conf)

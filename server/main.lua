@@ -36,7 +36,7 @@ while true do
             entities[uid] = {
                 position = {x = 120, y = 260},
                 size     = {w = 16, h = 16},
-                player   = {}
+                player   = {},
             }
 
             local position = entities[uid].position

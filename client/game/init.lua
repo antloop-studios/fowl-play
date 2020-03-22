@@ -11,6 +11,8 @@ love.graphics.setDefaultFilter("nearest", "nearest")
 
 spritesheet = libs.shits:load("res/sheets/monochrome_transparent.png", 16)
 spritesheet:name(25, 0, "player")
+spritesheet:name(3, 1, "tree")
+
 
 require "game/ecs"
 
@@ -21,7 +23,7 @@ local address, port = "fowl.antloop.world", 5700
 require "libs/dump"
 
 function game:enter()
-    self.camera = libs.camera(0, 0, 1, 0)
+    self.camera = libs.camera(0, 0, 3, 0)
     self.world  = libs.bump.newWorld(64)
     self.input  = libs.baton.new {
         controls = {
@@ -61,7 +63,7 @@ function game:update(dt)
             if data.event == 'spawn' then
                 local id
                 if data.uid == self.uid then
-                    data.data.sprite = { name = "player", color = { 0, 0, 1 } }
+                    data.data.sprite = { name = "player", color = { 0, 0, 1 }, scale = 1 }
                     id = e.player(data.data)
                 else
                     data.data.color = { 0, 1, 0 }
@@ -86,7 +88,7 @@ end
 function game:draw()
     self.camera:attach()
 
-    s(s.block, s.sprite)
+    s(s.dirt, s.sprite)
 
     self.camera:detach()
 

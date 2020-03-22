@@ -6,7 +6,7 @@ libs = require "libs"
 local gamestate = libs.gamestate
 local game      = require "game"
 
-love.graphics.setBackgroundColor(1, 1, 1)
+love.graphics.setBackgroundColor(120 / 255, 239 / 255, 255 / 255)
 
 function love.load()
     gamestate.registerEvents()

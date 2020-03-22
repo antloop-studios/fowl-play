@@ -1,6 +1,6 @@
-e.player = { "position", "size", "player", "sprite", "movement" }
+e.player = { "position", "size", "player", "sprite" }
 
-s.player = { "position", "size", "player", "movement" }
+s.player = { "position", "size", "player" }
 s.player.update = function(i, position, size, player)
     move_camera(position.x, position.y)
 
@@ -9,16 +9,6 @@ s.player.update = function(i, position, size, player)
     if x ~= 0 or y ~= 0 then
         game.server:send(ser.s({event='move', x=x, y=y}))
     end
-
-    -- local len = (x^2 + y^2)^0.5
-    -- if len == 0 then
-    --     len = 1
-    -- end
-
-    -- local dx = (x / len) * 100 * game.dt
-    -- local dy = (y / len) * 100 * game.dt
-
-    -- position.x, position.y, collisions = game.world:move(i, position.x + dx, position.y + dy)
 end
 
 function move_camera(x, y)

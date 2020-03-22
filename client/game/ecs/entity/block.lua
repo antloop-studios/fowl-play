@@ -1,1 +1,1 @@
-e.block = {"position", "size", "color"}
+e.block = {"position", "size", "sprite"}

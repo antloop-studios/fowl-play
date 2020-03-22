@@ -2,7 +2,8 @@ local level = {
     size = 16,
     registry = {
         block  = {0, 0, 0},
-        player = {0, 1, 0}
+        player = {0, 1, 0},
+        dirt   = {1, 1, 1}
     },
     map = {}
 }
@@ -28,33 +29,32 @@ function level:load(path)
     end
 end
 
+function level:make_dirt(x, y)
+    local conf = {
+        position = {x = x, y = y},
+        size     = {w = self.size, h = self.size},
+        color    = { 100 / 255, 70 / 255, 45 / 255 }
+    }
+
+    local id = e.dirt(conf)
+end
+
 function level:spawn(k, x, y)
     if k == "block" then
         local conf = {
             position = {x = x, y = y},
             size     = {w = self.size, h = self.size},
-            color    = {0, 0, 0}
+            sprite   = { name = "tree", color = { 0, 1, 0 }, scale = 1.5 }
         }
 
         local id = e.block(conf)
 
-        -- game.world:add(id, x, y, conf.size.w, conf.size.h)
+        self:make_dirt(x, y)
     end
 
-    if k == "player" then
-        local conf = {
-            position = { x = x, y = y    },
-            size     = { w = self.size, h = self.size  },
-            sprite   = { name = "player", color = { 0, 1, 0 } },
-            player   = {},
-            movement = { dx = 0, dy = 0, friction = 10 }
-        }
+    if k == "dirt" or k == "player" then
+        self:make_dirt(x, y)
     end
-
-    --     local id = e.player(conf)
-
-    --     game.world:add(id, x, y, conf.size.w, conf.size.h)
-    -- end
 end
 
 return level

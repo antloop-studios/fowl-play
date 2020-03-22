@@ -9,8 +9,8 @@ s.sprite.draw = function(i, position, size, sprite)
         position.x + size.w / 2,
         position.y,
         0,
-        1,
-        1,
+        sprite.scale,
+        sprite.scale,
         size.w / 2
     )
 end

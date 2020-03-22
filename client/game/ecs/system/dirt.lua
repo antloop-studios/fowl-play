@@ -1,6 +1,5 @@
-s.block = {"position", "size", "color"}
-s.block.draw = function(i, position, size, color)
-    -- sprite later
+s.dirt = { "position", "size", "color" }
+s.dirt.draw = function(i, position, size, color)
     love.graphics.setColor(color)
     love.graphics.rectangle("fill", position.x, position.y, size.w, size.h)
 end
