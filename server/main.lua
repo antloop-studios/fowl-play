@@ -24,7 +24,7 @@ function love.update()
     local f_update = false
 
     local queue = {}
-    local collisions
+    local collisions, count
 
     while event do
         if event.type == "receive" then
@@ -35,9 +35,42 @@ function love.update()
                 local dx = 1 * data.x
                 local dy = 1 * data.y
                 local position = entities[uid].position
+                local player = entities[uid].player
 
-                position.x, position.y, collisions =
+                position.x, position.y, collisions, count =
                     world:move(uid, position.x + dx, position.y + dy)
+
+                for c = 1, count do
+                    local other = collisions[c].other
+
+                    if type(other) == 'table' then
+                        if other.type == 'egg' and other.team ~= player.team then
+                            player.hasEgg = true
+                            queue[#queue + 1] =
+                                {
+                                    type = 'capture',
+                                    uid = uid,
+                                    teams = teams,
+                                    entities = entities
+                                }
+
+                        elseif other.type == 'chick' and other.team ==
+                            player.team and teams[player.team].carrier == uid then
+                            player.hasEgg = false
+
+                            teams[player.team].score =
+                                teams[player.team].score + 1
+
+                            queue[#queue + 1] =
+                                {
+                                    type = 'goal',
+                                    uid = uid,
+                                    teams = teams,
+                                    entities = entities
+                                }
+                        end
+                    end
+                end
 
                 entities[uid].ping = event.peer:round_trip_time()
 
@@ -74,16 +107,26 @@ function love.update()
                             entity.hearts.hp = entity.hearts.hp - 1
 
                             if entity.hearts.hp == 0 then
-                                entity =
+                                entities[uid] =
                                     {
                                         position = {x = 120, y = 260},
                                         size = {w = 16, h = 16},
-                                        player = {},
+                                        player = {
+                                            team = entity.team,
+                                            hasEgg = false
+                                        },
                                         hearts = {hp = 3}
                                     }
+                                queue[#queue + 1] =
+                                    {type = 'move', entities = entities}
+                            else
+                                queue[#queue + 1] =
+                                    {
+                                        type = 'hit',
+                                        uid = i,
+                                        hp = entity.hearts.hp
+                                    }
                             end
-                            queue[#queue + 1] =
-                                {type = 'hit', uid = i, hp = entity.hearts.hp}
                         end
                     end
                 end
@@ -99,7 +142,7 @@ function love.update()
             entities[uid] = {
                 position = {x = 120, y = 260},
                 size = {w = 16, h = 16},
-                player = {team = team},
+                player = {team = team, hasEgg = false},
                 sprite = {color = teamColor[team]},
                 hearts = {hp = 3}
             }
@@ -112,7 +155,8 @@ function love.update()
             event.peer:send(ser.s{
                 type = 'connect',
                 uid = uid,
-                entities = entities
+                entities = entities,
+                teams = teams
             })
 
             queue[#queue + 1] = {

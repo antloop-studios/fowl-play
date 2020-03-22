@@ -6,9 +6,9 @@ e, c, s = unpack(libs.ecs)
 love.graphics.setDefaultFilter("nearest", "nearest")
 
 spritesheet = libs.shits:load("res/sheets/monochrome_transparent.png", 16)
-spritesheet:name(25, 0,  "player")
+spritesheet:name(25, 0, "player")
 spritesheet:name(23, 22, "heart")
-spritesheet:name(25, 7,  "chick")
+spritesheet:name(25, 7, "chick")
 spritesheet:name(18, 29, "egg")
 
 spritesheet:name(3, 1, "tree1")
@@ -44,6 +44,7 @@ function game:enter()
     }
 
     self.entities = {}
+    self.teams = {}
     self.hit = false
 
     self.host = enet.host_create()
@@ -71,7 +72,11 @@ function game:update(dt)
                 messageHandler[message.type](self, message)
             elseif message.type == 'queue' then
                 for i, event in ipairs(message.queue) do
-                    messageHandler[event.type](self, event)
+                    if messageHandler[event.type] then
+                        messageHandler[event.type](self, event)
+                    else
+                        print('unhandled event', event.type)
+                    end
                 end
             end
         end

@@ -12,4 +12,5 @@ return function(self, event)
         end
         self.entities[i] = {e = e.get(id), id = id}
     end
+    self.teams = event.teams
 end
