@@ -1,17 +1,16 @@
 -- (c)ontrolled player
+e.cplayer = {"position", "size", "player", "sprite", "controller", "pointer"}
 
-e.cplayer = { "position", "size", "player", "sprite", "controller", "pointer" }
-
-s.cplayer = { "position", "size", "pointer", "player", "controller", }
+s.cplayer = {"position", "size", "pointer", "player", "controller"}
 s.cplayer.update = function(i, position, size, pointer)
     move_camera(position.x, position.y)
 
-    pointer.angle = pointer.angle + game.dt * 10
+    -- pointer.angle = pointer.angle + game.dt * 10
 
     local x, y = game.input:get("move")
 
     if x ~= 0 or y ~= 0 then
-        game.server:send(ser.s({event='move', x=x, y=y}))
+        game.server:send(ser.s({event = 'move', x = x, y = y}))
     end
 
     local mx, my = game.camera:mousePosition()
@@ -25,9 +24,12 @@ s.cplayer.update = function(i, position, size, pointer)
         game.server:send(ser.s({event = 'punch', dx = dx, dy = dy}))
 
         e.punch({
-            position = {x = position.x + size.w / 2, y = position.y + size.h / 2},
-            size     = {w = 16, h = 16},
-            punch    = {angle = pointer.angle, scale = 1}
+            position = {
+                x = position.x + size.w / 2,
+                y = position.y + size.h / 2
+            },
+            size = {w = 16, h = 16},
+            punch = {angle = pointer.angle, scale = 1}
         })
     end
 
