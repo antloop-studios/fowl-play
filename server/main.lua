@@ -118,7 +118,8 @@ function love.update()
                             entity.hearts.hp = entity.hearts.hp - 1
 
                             if entity.hearts.hp == 0 then
-                                world:update(i, 120, 260)
+                                world:update(i, unpack(
+                                                 teamSpawn[entity.player.team]))
                                 entities[i] =
                                     {
                                         ping = event.peer:round_trip_time(),
