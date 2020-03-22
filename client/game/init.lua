@@ -98,7 +98,7 @@ function game:draw()
     self.camera:attach()
     libs.shack:apply()
 
-    s(s.dirt, s.sprite, s.pointer, s.punch, s.hearts)
+    s(s.dirt, s.sprite, s.egg, s.pointer, s.punch, s.hearts)
 
     self.camera:detach()
 
@@ -118,7 +118,6 @@ function game:draw()
 
     love.graphics.setColor(1, 1, 1)
     love.graphics.print("FPS  " .. love.timer.getFPS(), love.graphics.getWidth() - 80, 30)
-    love.graphics.print("ping " .. self.entities[self.uid].ping .. "ms", love.graphics.getWidth() - 80, 46)
 end
 
 function game:leave() self.server:disconnect() end
