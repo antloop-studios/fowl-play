@@ -6,6 +6,7 @@ local bump      = require(path .. "bump")
 local baton     = require(path .. "baton")
 local ecs       = require(path .. "ecs")
 local shits     = require(path .. "shits")
+local shack     = require(path .. "shack")
 
 
 return {
@@ -15,4 +16,5 @@ return {
     baton     = baton,
     ecs       = ecs,
     shits     = shits,
+    shack     = shack,
 }

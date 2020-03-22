@@ -30,6 +30,12 @@ s.cplayer.update = function(i, position, size, pointer)
             punch    = {angle = pointer.angle, scale = 1}
         })
     end
+
+    if game.hit then
+        game.server:send(ser.s({event='move', x=math.random(-5, 5), y=math.random(-5, 5)}))
+
+        game.hit = false
+    end
 end
 
 function move_camera(x, y)

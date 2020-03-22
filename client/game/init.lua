@@ -1,6 +1,7 @@
 game = {
     dt = 0,
-    uid = 0
+    uid = 0,
+    hit = false,
 }
 
 
@@ -45,6 +46,7 @@ function game:enter()
     }
 
     self.entities = {}
+    self.hit = false
 
     self.host = enet.host_create()
     self.server = self.host:connect(config.server)
@@ -53,6 +55,7 @@ function game:enter()
 end
 
 function game:update(dt)
+    libs.shack:update(dt)
     self.dt = dt
     self.input:update()
 
@@ -89,6 +92,12 @@ function game:update(dt)
                 e.delete(self.entities[data.uid].id)
                 self.entities[data.uid] = nil
 
+            elseif data.event == 'hit' then
+                if data.uid == self.uid then
+                    libs.shack:setShake(20)
+                    self.hit = true
+                end
+
             elseif data.event == 'move' then
                 for i, entity in pairs(data.entities) do
                     if self.entities[i] then
@@ -107,6 +116,7 @@ end
 
 function game:draw()
     self.camera:attach()
+    libs.shack:apply()
 
     s(s.dirt, s.sprite, s.pointer, s.punch)
 
