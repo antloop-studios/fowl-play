@@ -9,6 +9,7 @@ spritesheet = libs.shits:load("res/sheets/monochrome_transparent.png", 16)
 spritesheet:name(25, 0,  "player")
 spritesheet:name(23, 22, "heart")
 spritesheet:name(25, 7,  "chick")
+spritesheet:name(18, 29, "egg")
 
 spritesheet:name(3, 1, "tree1")
 spritesheet:name(5, 1, "tree2")

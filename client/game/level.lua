@@ -6,6 +6,7 @@ local level = {
         dirt        = {1, 1, 1},
         chicken_blu = {0, 0, 1},
         chicken_red = {1, 0, 0},
+        egg         = {1, 1, 0},
     },
     map = {}
 }
@@ -86,6 +87,19 @@ function level:spawn(k, x, y)
         }
 
         local id = e.chicken(conf)
+
+        self:make_dirt(x, y)
+    end
+
+    if k == "egg" then
+        local conf = {
+            position = {x = x, y = y},
+            size     = {w = self.size, h = self.size},
+            sprite   = { name = "egg", color = { 0.8, 0.8, 0.8 }, scale = 1 },
+            egg      = { }
+        }
+
+        local id = e.egg(conf)
 
         self:make_dirt(x, y)
     end

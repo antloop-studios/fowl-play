@@ -8,3 +8,4 @@ c.pointer = {angle = 0, radius = 0}
 c.punch = {angle = 0, scale = 0}
 c.hearts = { hp = 0 }
 c.chicken = { team = 0 }
+c.egg = {}

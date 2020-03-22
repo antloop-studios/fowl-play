@@ -8,6 +8,7 @@ require(path .. "entity/cplayer")
 require(path .. "entity/dirt")
 require(path .. "entity/punch")
 require(path .. "entity/chicken")
+require(path .. "entity/egg")
 
 require(path .. "system/sprite")
 require(path .. "system/dirt")
