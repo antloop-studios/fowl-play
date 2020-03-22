@@ -50,7 +50,7 @@ function love.update()
                     if type(other) == 'table' then
                         if other.type == 'egg' and other.team ~= player.team and
                             not player.hasEgg and
-                            not team[player.team].capturing then
+                            not teams[player.team].capturing then
 
                             player.hasEgg = true
                             teams[player.team].capturing = true
