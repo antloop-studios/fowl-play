@@ -7,6 +7,7 @@ require "utils"
 require "libs/dump"
 
 config = {server = "fowl2.antloop.world:5700"}
+teamSpawn = {red = {x = 0, y = 0}, blue = {x = 255, y = 255}}
 
 local entities = {}
 local teams = {red = {players = 0, score = 0}, blue = {players = 0, score = 0}}
@@ -111,7 +112,7 @@ function love.update()
                                 entities[i] =
                                     {
                                         ping = event.peer:round_trip_time(),
-                                        position = {x = 120, y = 260},
+                                        position = teamSpawn[entity.player.team],
                                         size = {w = 16, h = 16},
                                         player = {
                                             team = entity.player.team,
@@ -156,7 +157,7 @@ function love.update()
 
             entities[uid] = {
                 ping = event.peer:round_trip_time(),
-                position = {x = 120, y = 260},
+                position = teamSpawn[team],
                 size = {w = 16, h = 16},
                 player = {team = team, hasEgg = false},
                 sprite = {name = 'player', color = teamColor[team], scale = 1},

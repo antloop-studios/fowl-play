@@ -56,6 +56,10 @@ function level:spawn(k, x, y)
             sprite = {name = "chick", color = {0.1, 0.1, 0.5}, scale = 2},
             chicken = {team = 1}
         }
+        teamSpawn.blue = {
+            x = conf.position.x + conf.size.w / 2,
+            y = conf.position.y + conf.size.h / 2
+        }
         world:add({type = 'chick', team = 'blue'}, x, y,
                   conf.size.w * conf.sprite.scale,
                   conf.size.h * conf.sprite.scale)
@@ -67,6 +71,10 @@ function level:spawn(k, x, y)
             size = {w = self.size, h = self.size},
             sprite = {name = "chick", color = {0.5, 0, 0}, scale = 2},
             chicken = {team = 0}
+        }
+        teamSpawn.red = {
+            x = conf.position.x + conf.size.w / 2,
+            y = conf.position.y + conf.size.h / 2
         }
         world:add({type = 'chick', team = 'red'}, x, y,
                   conf.size.w * conf.sprite.scale,
