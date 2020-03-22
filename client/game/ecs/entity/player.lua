@@ -2,13 +2,13 @@ e.player = { "position", "size", "player", "sprite" }
 
 s.player = { "position", "size", "player" }
 s.player.update = function(i, position, size, player)
-    move_camera(position.x, position.y)
+    -- move_camera(position.x, position.y)
 
-    local x, y = game.input:get("move")
+    -- local x, y = game.input:get("move")
 
-    if x ~= 0 or y ~= 0 then
-        game.server:send(ser.s({event='move', x=x, y=y}))
-    end
+    -- if x ~= 0 or y ~= 0 then
+    --     game.server:send(ser.s({event='move', x=x, y=y}))
+    -- end
 end
 
 function move_camera(x, y)

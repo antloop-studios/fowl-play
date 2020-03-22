@@ -4,6 +4,7 @@ require(path .. "components")
 
 require(path .. "entity/block")
 require(path .. "entity/player")
+require(path .. "entity/cplayer")
 require(path .. "entity/dirt")
 
 require(path .. "system/sprite")
