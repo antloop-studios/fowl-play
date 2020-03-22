@@ -1,8 +1,8 @@
 -- (c)ontrolled player
-e.cplayer = {"position", "size", "player", "sprite", "controller", "pointer"}
+e.cplayer = {"position", "size", "player", "sprite", "controller", "pointer", "hearts"}
 
-s.cplayer = {"position", "size", "pointer", "player", "controller"}
-s.cplayer.update = function(i, position, size, pointer)
+s.cplayer = {"position", "size", "pointer", "hearts", "player", "controller" }
+s.cplayer.update = function(i, position, size, pointer, hearts)
     move_camera(position.x, position.y)
 
     local x, y = game.input:get("move")

@@ -1,6 +1,6 @@
-e.player = { "position", "size", "player", "sprite" }
+e.player = { "position", "size", "player", "sprite", "hearts" }
 
-s.player = { "position", "size", "player" }
+s.player = { "position", "size", "player", "hearts" }
 s.player.update = function(i, position, size, player)
     -- move_camera(position.x, position.y)
 
