@@ -39,6 +39,13 @@ function love.update()
                 f_update = true
 
             elseif data.event == 'punch' then
+                host:broadcast(ser.s{
+                    event = 'punch',
+                    uid = uid,
+                    dx = data.dx,
+                    dy = data.dy
+                })
+
                 local uid = event.peer:index()
                 local px, py = entities[uid].position.x,
                                entities[uid].position.y
