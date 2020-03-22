@@ -9,6 +9,8 @@ require "libs/dump"
 config = {server = "fowl2.antloop.world:5700"}
 
 local entities = {}
+local teams = {red = {players = 0, score = 0}, blue = {players = 0, score = 0}}
+local teamColor = {red = {0.8, 0.1, 0.05}, blue = {0.05, 0.1, 0.8}}
 
 function love.load(args)
     if args[1] == 'local' then config.server = "localhost:5700" end
@@ -54,7 +56,8 @@ function love.update()
                                entities[uid].position.y
 
                 for i, entity in pairs(entities) do
-                    if i ~= uid then
+                    if i ~= uid and entity.player.team ~=
+                        entities[uid].player.team then
                         local ex, ey = entity.position.x, entity.position.y
 
                         local da = math.atan2(py - ey, px - ex)
@@ -67,10 +70,10 @@ function love.update()
                         local hit = math.abs(hx) < 10 and math.abs(hy) < 10
 
                         if math.distance(px, py, ex, ey) < 32 and hit then
-                            entities[i].hearts.hp = entities[i].hearts.hp - 1
+                            entity.hearts.hp = entity.hearts.hp - 1
 
-                            if entities[i].hearts.hp == 0 then
-                                entities[i] =
+                            if entity.hearts.hp == 0 then
+                                entity =
                                     {
                                         position = {x = 120, y = 260},
                                         size = {w = 16, h = 16},
@@ -79,11 +82,7 @@ function love.update()
                                     }
                             end
                             queue[#queue + 1] =
-                                {
-                                    type = 'hit',
-                                    uid = i,
-                                    hp = entities[i].hearts.hp
-                                }
+                                {type = 'hit', uid = i, hp = entity.hearts.hp}
                         end
                     end
                 end
@@ -92,11 +91,15 @@ function love.update()
         elseif event.type == "connect" then
             local uid = event.peer:index()
             print("connected: ", event.peer, uid)
+            local team = teams.red.players < teams.blue.players and 'red' or
+                             'blue'
+            teams[team].players = teams[team].players + 1
 
             entities[uid] = {
                 position = {x = 120, y = 260},
                 size = {w = 16, h = 16},
-                player = {},
+                player = {team = team},
+                sprite = {color = teamColor[team]},
                 hearts = {hp = 3}
             }
 
