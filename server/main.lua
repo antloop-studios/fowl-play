@@ -35,8 +35,7 @@ while true do
 
             entities[uid] = {
                 position = {x = 120, y = 260},
-                size     = {w = 20, h = 20},
-                color    = {0, 1, 0},
+                size     = {w = 16, h = 16},
                 player   = {}
             }
 
