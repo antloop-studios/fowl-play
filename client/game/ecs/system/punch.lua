@@ -1,6 +1,5 @@
 s.punch = {"position", "size", "punch"}
 s.punch.draw = function(i, position, size, punch)
-    -- print(game.dt, punch.scale)
     position.x = position.x + math.cos(punch.angle) * game.dt * 16
     position.y = position.y + math.sin(punch.angle) * game.dt * 16
 

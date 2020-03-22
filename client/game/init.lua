@@ -101,8 +101,6 @@ function game:update(dt)
                     self.hit = true
                 end
 
-                self.entities[data.uid].e.hearts.hp = self.entities[data.uid].e.hearts.hp - 1
-
             elseif data.event == "punch" then
                 if data.uid ~= self.uid then
                     local position = self.entities[data.uid].e.position
