@@ -61,9 +61,10 @@ function game:update(dt)
             if data.event == 'spawn' then
                 local id
                 if data.uid == self.uid then
-                    data.data.sprite = { name = "player", color = { 0, 1, 0 } }
+                    data.data.sprite = { name = "player", color = { 0, 0, 1 } }
                     id = e.player(data.data)
                 else
+                    data.data.color = { 0, 1, 0 }
                     id = e.block(data.data)
                 end
                 self.entities[data.uid] = {e = e.get(id), id = id}
