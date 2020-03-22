@@ -37,6 +37,7 @@ function love.update()
                 position.x, position.y, collisions = world:move(uid, position.x + dx, position.y + dy)
 
                 entities[uid].ping = event.peer:round_trip_time()
+
                 f_update = true
             end
         elseif event.type == "connect" then
@@ -89,6 +90,18 @@ function love.update()
 
             f_update = true
 
+        elseif event.type == 'punch' then
+            local uid = event.peer:index()
+            local px, py = entities[uid].x, entities[uid].y
+
+            for i, entity in pairs(entities) do
+                if i ~= uid then
+                    local ex, ey = entity[uid].x, entity[uid].y
+                    if math.distance(px, py, ex, ey) < 16 then
+                        host.get_peer(i):reconnect()
+                    end
+                end
+            end
         end
         event = host:service()
     end

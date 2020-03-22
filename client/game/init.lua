@@ -68,6 +68,7 @@ function game:update(dt)
                     id = e.cplayer(data.data)
                 else
                     data.data.sprite = { name = "player", color = { 0, 1, 0 }, scale = 1 }
+                    data.data.ping = nil
                     id = e.player(data.data)
                 end
                 self.entities[data.uid] = {e = e.get(id), id = id}
@@ -78,12 +79,15 @@ function game:update(dt)
 
             elseif data.event == 'despawn' then
                 e.delete(self.entities[data.uid].id)
+                self.entities[data.uid] = nil
 
             elseif data.event == 'move' then
                 for i, entity in pairs(data.entities) do
-                    self.entities[i].ping = entity.ping
-                    self.entities[i].e.position.x = entity.position.x
-                    self.entities[i].e.position.y = entity.position.y
+                    if self.entities[i] then
+                        self.entities[i].ping = entity.ping
+                        self.entities[i].e.position.x = entity.position.x
+                        self.entities[i].e.position.y = entity.position.y
+                    end
                 end
             end
         end
@@ -100,6 +104,7 @@ function game:draw()
 
     self.camera:detach()
 
+    love.graphics.setColor(0, 0, 0)
     love.graphics.print(dump(self.entities))
 end
 
