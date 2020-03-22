@@ -168,9 +168,13 @@ function love.update()
 
         elseif event.type == "disconnect" then
             local uid = event.peer:index()
+            print(dump(entities[uid]))
+
             teams[entities[uid].player.team].players =
                 teams[entities[uid].player.team].players - 1
+
             entities[uid] = nil
+
             world:remove(uid)
 
             queue[#queue + 1] = {type = 'despawn', uid = uid}
