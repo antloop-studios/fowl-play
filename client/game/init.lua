@@ -12,6 +12,8 @@ love.graphics.setDefaultFilter("nearest", "nearest")
 spritesheet = libs.shits:load("res/sheets/monochrome_transparent.png", 16)
 spritesheet:name(25, 0, "player")
 spritesheet:name(3, 1, "tree")
+spritesheet:name(24, 20, "pointer")
+
 
 
 require "game/ecs"
@@ -22,7 +24,7 @@ ser = require "libs/binser"
 require "libs/dump"
 
 function game:enter()
-    self.camera = libs.camera(0, 0, 3, 0)
+    self.camera = libs.camera(0, 0, 4, 0)
     self.world  = libs.bump.newWorld(64)
     self.input  = libs.baton.new {
         controls = {
@@ -30,6 +32,7 @@ function game:enter()
             right = {'key:d', 'axis:leftx+', 'button:dpright'},
             up    = {'key:w', 'axis:lefty-', 'button:dpup'   },
             down  = {'key:s', 'axis:lefty+', 'button:dpdown' },
+            punch = {'mouse:1'},
             quit  = {'key:escape'}
         },
         pairs = {
@@ -63,8 +66,9 @@ function game:update(dt)
                 print('spawn', data.uid)
                 local id
                 if data.uid == self.uid then
-                    data.data.sprite = { name = "player", color = { 0, 0, 1 }, scale = 1 }
+                    data.data.sprite = { name = "player", color = { 84 / 200, 81 / 200, 75 / 200 }, scale = 1 }
                     data.data.controller = {}
+                    data.data.pointer = { angle = 0, radius = 16 }
                     id = e.cplayer(data.data)
                 else
                     data.data.sprite = { name = "player", color = { 0, 1, 0 }, scale = 1 }
@@ -78,7 +82,6 @@ function game:update(dt)
 
             elseif data.event == 'despawn' then
                 e.delete(self.entities[data.uid].id)
-
             elseif data.event == 'move' then
                 for i, entity in pairs(data.entities) do
                     self.entities[i].e.position.x = entity.position.x
@@ -95,7 +98,7 @@ end
 function game:draw()
     self.camera:attach()
 
-    s(s.dirt, s.sprite)
+    s(s.dirt, s.sprite, s.pointer)
 
     self.camera:detach()
 

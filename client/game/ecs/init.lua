@@ -9,3 +9,4 @@ require(path .. "entity/dirt")
 
 require(path .. "system/sprite")
 require(path .. "system/dirt")
+require(path .. "system/pointer")

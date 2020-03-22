@@ -33,7 +33,7 @@ function level:make_dirt(x, y)
     local conf = {
         position = {x = x, y = y},
         size     = {w = self.size, h = self.size},
-        color    = { 100 / 255, 70 / 255, 45 / 255 }
+        color    = { 27.8 / 200, 17.6 / 200, 23.5 / 200 }
     }
 
     local id = e.dirt(conf)
@@ -44,7 +44,7 @@ function level:spawn(k, x, y)
         local conf = {
             position = {x = x, y = y},
             size     = {w = self.size, h = self.size},
-            sprite   = { name = "tree", color = { 0, 1, 0 }, scale = 1.5 }
+            sprite   = { name = "tree", color = { 22 / 200, 85 / 200, 45 / 200 }, scale = 1.5 }
         }
 
         local id = e.block(conf)
