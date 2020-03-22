@@ -53,6 +53,7 @@ function game:update(dt)
     self.input:update()
 
     if self.input:get("quit") == 1 then
+        self.server:disconnect()
         love.event.quit()
     end
 
@@ -107,12 +108,12 @@ function game:draw()
 
     self.camera:detach()
 
-    love.graphics.setColor(0, 0, 0)
+    love.graphics.setColor(1, 1, 1)
     love.graphics.print(dump(self.entities))
 end
 
 function game:leave()
-    self.host:destroy()
+    self.server:disconnect()
 end
 
 return game
