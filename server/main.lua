@@ -32,8 +32,8 @@ function love.update()
             local uid = event.peer:index()
 
             if data.event == 'move' then
-                local dx = 1 * data.x
-                local dy = 1 * data.y
+                local dx = 1 * (data.x == 0 and 0 or data.x > 0 and 1 or -1)
+                local dy = 1 * (data.y == 0 and 0 or data.y > 0 and 1 or -1)
                 local position = entities[uid].position
                 local player = entities[uid].player
 
@@ -107,6 +107,7 @@ function love.update()
                             entity.hearts.hp = entity.hearts.hp - 1
 
                             if entity.hearts.hp == 0 then
+                                world:update(i, 120, 260)
                                 entities[i] =
                                     {
                                         ping = event.peer:round_trip_time(),
