@@ -15,12 +15,12 @@ s.punch.draw = function(i, position, size, punch)
     love.graphics.draw(
         spritesheet.image,
         quad,
-        position.x + math.cos(punch.angle) * 12,
-        position.y + math.sin(punch.angle) * 12,
+        position.x + math.cos(punch.angle) * 17,
+        position.y + math.sin(punch.angle) * 17,
         punch.angle + math.pi / 4,
         punch.scale,
         punch.scale,
-        9,
+        10,
         4
     )
 end

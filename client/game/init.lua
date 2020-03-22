@@ -11,7 +11,11 @@ love.graphics.setDefaultFilter("nearest", "nearest")
 
 spritesheet = libs.shits:load("res/sheets/monochrome_transparent.png", 16)
 spritesheet:name(25, 0,  "player")
-spritesheet:name(3, 1,   "tree")
+spritesheet:name(3, 1,   "tree1")
+spritesheet:name(5, 1,   "tree2")
+spritesheet:name(3, 2,   "tree3")
+spritesheet:name(4, 2,   "tree4")
+
 spritesheet:name(24, 20, "pointer")
 spritesheet:name(25, 11, "punch")
 

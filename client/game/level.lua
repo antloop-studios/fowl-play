@@ -8,6 +8,12 @@ local level = {
     map = {}
 }
 
+local tree_colors = {
+    { 25 / 200, 88 / 200, 48 / 200 }, -- light
+    { 22 / 200, 85 / 200, 45 / 200 },
+    { 16 / 200, 79 / 200, 39 / 200 }, -- less light
+}
+
 function level:load(path)
     local image = love.image.newImageData(path)
     local map = {}
@@ -44,7 +50,7 @@ function level:spawn(k, x, y)
         local conf = {
             position = {x = x, y = y},
             size     = {w = self.size, h = self.size},
-            sprite   = { name = "tree", color = { 22 / 200, 85 / 200, 45 / 200 }, scale = 1.5 }
+            sprite   = { name = "tree" .. math.random(1, 3), color = tree_colors[math.random(1, #tree_colors)], scale = 1.5 }
         }
 
         local id = e.block(conf)
