@@ -39,7 +39,12 @@ function emeta.__index.delete(id)
    rawset(entity, id, nil)
    emeta.free[#emeta.free + 1] = id
    for syskey, data in pairs(smeta.bykey) do
-      data.free[id] = true
+      local sid = data.etos[id]
+      if sid then
+      data.etos[id] = nil
+      data.free[sid] = true
+      data[sid] = nil
+      end
    end
 end
 
@@ -53,8 +58,6 @@ function emeta.__index.get(id)
    return e
 end
 
--- get allocated entity count
--- len = e.len()
 function emeta.__index.len()
    return emeta.used
 end
@@ -121,16 +124,17 @@ function emeta:__newindex(name, components)
             -- cache entity id's in systems for better performance
             for _, key in ipairs(syskeys) do
                local system = smeta.bykey[key]
-               local sid = system.free[id]
+               local sid = system.free[#system.free] and #system.free or nil
 
                if sid then
-                  system.free[id] = nil
-                  sid = system.etos[id]
+                  system.free[#system.free] = nil
+               --  sid = system.etos[id]
                else
                   system.used = system.used + 1
                end
 
                system[sid or system.used] = id
+               system.etos[id] = sid or system.used
             end
 
             return id
@@ -211,12 +215,20 @@ function smeta:__newindex(name, components)
                   local subsys = self[s]
 
                   for e = 1, system.used do -- for each subsystem
-                     local id = system[e] -- get real id
+                  local id = system[e] -- get real id
 
-                     if system.free[id] == nil then -- if entity is active
+                  if syskey == 'positionpunchsize' then
+                     print(e, id, dump(system))
+                  end
+
+                     if id and system.free[id] == nil then -- if entity is active
                         subsys(datakey(id))
                      end
+
+                     if syskey == 'positionpunchsize' then
+                     print(e, id, dump(system))
                   end
+               end
                end
             end
          }
