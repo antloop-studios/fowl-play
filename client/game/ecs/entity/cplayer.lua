@@ -5,8 +5,6 @@ s.cplayer = {"position", "size", "pointer", "player", "controller"}
 s.cplayer.update = function(i, position, size, pointer)
     move_camera(position.x, position.y)
 
-    -- pointer.angle = pointer.angle + game.dt * 10
-
     local x, y = game.input:get("move")
 
     if x ~= 0 or y ~= 0 then

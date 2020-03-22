@@ -98,6 +98,23 @@ function game:update(dt)
                     self.hit = true
                 end
 
+            elseif data.event == "punch" then
+                if data.uid ~= self.uid then
+                    local position = self.entities[data.uid].e.position
+                    local size = self.entities[data.uid].e.size
+
+                    local angle = math.atan2(position.y - data.dy, position.x - data.dx)
+
+                    e.punch({
+                        position = {
+                            x = position.x + size.w / 2,
+                            y = position.y + size.h / 2
+                        },
+                        size = {w = 16, h = 16},
+                        punch = {angle = angle, scale = 1}
+                    })
+                end
+
             elseif data.event == 'move' then
                 for i, entity in pairs(data.entities) do
                     if self.entities[i] then
