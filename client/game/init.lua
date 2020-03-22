@@ -6,7 +6,7 @@ e, c, s = unpack(libs.ecs)
 love.graphics.setDefaultFilter("nearest", "nearest")
 
 spritesheet = libs.shits:load("res/sheets/monochrome_transparent.png", 16)
-spritesheet:name(25, 0, "player")
+spritesheet:name(25, 9, "player")
 spritesheet:name(23, 22, "heart")
 spritesheet:name(25, 7, "chick")
 spritesheet:name(18, 29, "egg")
