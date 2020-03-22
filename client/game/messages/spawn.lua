@@ -6,6 +6,7 @@ return function(self, event)
         event.data.sprite = {name = "player", color = color, scale = 1}
         event.data.controller = {}
         event.data.pointer = {angle = 0, radius = 16}
+        event.data.ping = nil
         id = e.cplayer(event.data)
     else
         local color = event.data.sprite.color

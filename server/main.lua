@@ -140,6 +140,7 @@ function love.update()
             teams[team].players = teams[team].players + 1
 
             entities[uid] = {
+                ping = event.peer:round_trip_time(),
                 position = {x = 120, y = 260},
                 size = {w = 16, h = 16},
                 player = {team = team, hasEgg = false},
