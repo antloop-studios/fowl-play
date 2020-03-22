@@ -1,9 +1,11 @@
 local level = {
     size = 16,
     registry = {
-        block  = {0, 0, 0},
-        player = {0, 1, 0},
-        dirt   = {1, 1, 1}
+        block       = {0, 0, 0},
+        player      = {0, 1, 0},
+        dirt        = {1, 1, 1},
+        chicken_blu = {0, 0, 1},
+        chicken_red = {1, 0, 0},
     },
     map = {}
 }
@@ -59,6 +61,32 @@ function level:spawn(k, x, y)
     end
 
     if k == "dirt" or k == "player" then
+        self:make_dirt(x, y)
+    end
+
+    if k == "chicken_blu" then
+        local conf = {
+            position = {x = x, y = y},
+            size     = {w = self.size * 2, h = self.size * 2},
+            sprite   = { name = "chick", color = { 0.1, 0.1, 0.5 }, scale = 2 },
+            chicken  = { team = 1 }
+        }
+
+        local id = e.chicken(conf)
+
+        self:make_dirt(x, y)
+    end
+
+    if k == "chicken_red" then
+        local conf = {
+            position = {x = x, y = y},
+            size     = {w = self.size * 2, h = self.size * 2},
+            sprite   = { name = "chick", color = { 0.5, 0, 0 }, scale = 2 },
+            chicken  = { team = 0 }
+        }
+
+        local id = e.chicken(conf)
+
         self:make_dirt(x, y)
     end
 end
