@@ -54,6 +54,7 @@ function game:update(dt)
     self.input:update()
 
     if self.input:get("quit") == 1 then
+        self.server:disconnect()
         love.event.quit()
     end
 
@@ -113,7 +114,7 @@ function game:draw()
 end
 
 function game:leave()
-    self.host:destroy()
+    self.server:disconnect()
 end
 
 return game
