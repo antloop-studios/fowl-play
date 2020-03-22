@@ -98,7 +98,7 @@ function game:draw()
     self.camera:detach()
 
     love.graphics.setColor(0, 0, 0, 0.25)
-    love.graphics.rectangle("fill", 12, 40, 220, 16 * 5)
+    love.graphics.rectangle("fill", 12, 30, 220, 16 * 5)
 
     for i, v in ipairs(self.log) do
         local color = { 1, 1, 1, i / #self.log }
@@ -108,8 +108,12 @@ function game:draw()
 
         love.graphics.setColor(color)
 
-        love.graphics.print(v.msg, 16, 30 + 14 * i)
+        love.graphics.print(v.msg, 16, 20 + 14 * i)
     end
+
+    love.graphics.setColor(1, 1, 1)
+    love.graphics.print("FPS  " .. love.timer.getFPS(), love.graphics.getWidth() - 80, 30)
+    love.graphics.print("ping " .. self.entities[self.uid].ping .. "ms", love.graphics.getWidth() - 80, 46)
 end
 
 function game:leave() self.server:disconnect() end
