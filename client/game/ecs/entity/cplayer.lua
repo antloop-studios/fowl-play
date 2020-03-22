@@ -3,7 +3,6 @@ e.cplayer = {"position", "size", "player", "sprite", "controller", "pointer", "h
 
 s.cplayer = {"position", "size", "pointer", "hearts", "player", "controller" }
 s.cplayer.update = function(i, position, size, pointer, hearts, player)
-    hearts.hp = player.life
     move_camera(position.x, position.y)
 
     local x, y = game.input:get("move")

@@ -1,9 +1,6 @@
-e.player = { "position", "size", "player", "sprite", "hearts" }
+e.player = {"position", "size", "player", "sprite", "hearts"}
 
-s.player = { "position", "size", "player", "hearts" }
-s.player.update = function(i, position, size, player, hearts)
-    hearts.hp = player.life
-end
+s.player = {"position", "size", "player", "hearts"}
 
 function move_camera(x, y)
     local speed = 10

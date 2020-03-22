@@ -67,22 +67,22 @@ function love.update()
                         local hit = math.abs(hx) < 10 and math.abs(hy) < 10
 
                         if math.distance(px, py, ex, ey) < 32 and hit then
-                            entities[i].player.life =
-                                entities[i].player.life - 1
+                            entities[i].hearts.hp = entities[i].hearts.hp - 1
 
-                            if entities[i].player.life == 0 then
+                            if entities[i].hearts.hp == 0 then
                                 entities[i] =
                                     {
                                         position = {x = 120, y = 260},
                                         size = {w = 16, h = 16},
-                                        player = {life = 3}
+                                        player = {},
+                                        hearts = {hp = 3}
                                     }
                             end
                             queue[#queue + 1] =
                                 {
                                     type = 'hit',
                                     uid = i,
-                                    life = entities[i].player.life
+                                    hp = entities[i].hearts.hp
                                 }
                         end
                     end
@@ -96,7 +96,8 @@ function love.update()
             entities[uid] = {
                 position = {x = 120, y = 260},
                 size = {w = 16, h = 16},
-                player = {life = 3}
+                player = {},
+                hearts = {hp = 3}
             }
 
             local position = entities[uid].position
@@ -109,18 +110,6 @@ function love.update()
                 uid = uid,
                 entities = entities
             })
-
-            -- for p = 1, host:peer_count() do
-            --     if host:get_peer(p):state() == 'connected' then
-            --         if p ~= uid then
-            --             event.peer:send(ser.s{
-            --                 event = 'spawn',
-            --                 data = entities[p],
-            --                 uid = p
-            --             })
-            --         end
-            --     end
-            -- end
 
             queue[#queue + 1] = {
                 type = 'spawn',
