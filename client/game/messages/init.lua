@@ -7,5 +7,6 @@ return {
     hit = require(m .. "hit"),
     punch = require(m .. "punch"),
     capture = require(m .. "capture"),
-    goal = require(m .. "goal")
+    goal = require(m .. "goal"),
+    restore = require(m .. "restore")
 }

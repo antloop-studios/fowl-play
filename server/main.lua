@@ -49,7 +49,8 @@ function love.update()
 
                     if type(other) == 'table' then
                         if other.type == 'egg' and other.team ~= player.team and
-                            not player.hasEgg then
+                            not player.hasEgg and
+                            not team[player.team].capturing then
 
                             player.hasEgg = true
                             teams[player.team].capturing = true
@@ -118,6 +119,17 @@ function love.update()
                             entity.hearts.hp = entity.hearts.hp - 1
 
                             if entity.hearts.hp <= 0 then
+                                if entity.player.hasEgg then
+                                    teams[entity.player.team].capturing = false
+                                    queue[#queue + 1] =
+                                        {
+                                            type = 'restore',
+                                            uid = uid,
+                                            teams = teams,
+                                            capturedTeam = other.team == 'blue' and
+                                                'red' or 'blue'
+                                        }
+                                end
                                 world:update(i, teamSpawn[entity.player.team].x,
                                              teamSpawn[entity.player.team].y)
                                 entities[i] =
@@ -169,7 +181,7 @@ function love.update()
 
             entities[uid] = {
                 ping = event.peer:round_trip_time(),
-                position = teamSpawn[team],
+                position = {x = teamSpawn[team].x, y = teamSpawn[team].y},
                 size = {w = 16, h = 16},
                 player = {team = team, hasEgg = false},
                 sprite = {name = 'player', color = teamColor[team], scale = 1},
