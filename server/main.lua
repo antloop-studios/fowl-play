@@ -21,6 +21,8 @@ function love.update()
     local event = host:service(100)
     local f_update = false
 
+    local queue = {}
+
     while event do
         if event.type == "receive" then
             local data = ser.d(event.data)[1]
@@ -36,16 +38,16 @@ function love.update()
 
                 entities[uid].ping = event.peer:round_trip_time()
 
-                f_update = true
+                queue[#queue + 1] = {type = 'move', entities = entities}
 
             elseif data.event == 'punch' then
-                host:broadcast(ser.s{
-                    event = 'punch',
+                queue[#queue + 1] = {
+                    type = 'punch',
                     uid = uid,
                     dx = data.dx,
                     dy = data.dy,
                     angle = data.angle
-                })
+                }
 
                 local uid = event.peer:index()
                 local px, py = entities[uid].position.x,
@@ -76,8 +78,7 @@ function love.update()
                                         player = {life = 3}
                                     }
                             end
-                            host:broadcast(ser.s{event = 'hit', uid = i})
-                            f_update = true
+                            queue[#queue + 1] = {type = 'hit', uid = i}
                         end
                     end
                 end
@@ -98,46 +99,40 @@ function love.update()
 
             world:add(uid, position.x, position.y, size.w, size.h)
 
-            event.peer:send(ser.s{event = 'connect', uid = uid})
-
-            for p = 1, host:peer_count() do
-                if host:get_peer(p):state() == 'connected' then
-                    if p ~= uid then
-                        event.peer:send(ser.s{
-                            event = 'spawn',
-                            data = entities[p],
-                            uid = p
-                        })
-                    end
-                end
-            end
-
-            host:broadcast(ser.s{
-                event = 'spawn',
-                data = entities[uid],
-                uid = uid
+            event.peer:send(ser.s{
+                type = 'connect',
+                uid = uid,
+                entities = entities
             })
 
-            f_update = true
+            -- for p = 1, host:peer_count() do
+            --     if host:get_peer(p):state() == 'connected' then
+            --         if p ~= uid then
+            --             event.peer:send(ser.s{
+            --                 event = 'spawn',
+            --                 data = entities[p],
+            --                 uid = p
+            --             })
+            --         end
+            --     end
+            -- end
+
+            queue[#queue + 1] = {
+                type = 'spawn',
+                data = entities[uid],
+                uid = uid
+            }
 
         elseif event.type == "disconnect" then
             local uid = event.peer:index()
             world:remove(uid)
 
-            host:broadcast(ser.s{event = 'despawn', uid = uid})
+            queue[#queue + 1] = {type = 'despawn', uid = uid}
 
             print("disconnected: ", event.peer, uid)
-
-            f_update = true
         end
         event = host:service()
     end
 
-    if f_update then
-        f_update = false
-
-        host:broadcast(ser.s({event = 'move', entities = entities}), 0,
-                       "unreliable")
-    end
-
+    host:broadcast(ser.s{type = 'queue', queue = queue})
 end
