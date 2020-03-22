@@ -1,11 +1,13 @@
 local level = {
-    size = 16,
+    size = 20,
     registry = {
         block  = {0, 0, 0},
         player = {0, 1, 0}
     },
     map = {}
 }
+
+local uid = 100000
 
 function level:load(path)
     local image = love.image.newImageData(path)
@@ -32,26 +34,26 @@ function level:spawn(k, x, y)
     if k == "block" then
         local conf = {
             position = {x = x, y = y},
-            size     = {w = self.size, h = self.size},
+            size     = {w = 20, h = 20},
             color    = {0, 0, 0}
         }
 
-        local id = e.block(conf)
-
-        -- game.world:add(id, x, y, conf.size.w, conf.size.h)
+        -- local id = e.block(conf)
+        uid = uid + 1
+        world:add(uid, x, y, conf.size.w, conf.size.h)
     end
 
     -- if k == "player" then
     --     local conf = {
-    --         position = { x = x, y = y    },
-    --         size     = { w = self.size, h = self.size  },
-    --         sprite   = { name = "player", color = { 0, 1, 0 } },
+    --         position = {x = x, y = y},
+    --         size     = {w = 20, h = 20},
+    --         color    = {0, 1, 0},
     --         player   = {}
     --     }
 
-    --     local id = e.player(conf)
+        -- local id = e.player(conf)
 
-    --     game.world:add(id, x, y, conf.size.w, conf.size.h)
+        -- game.world:add(id, x, y, conf.size.w, conf.size.h)
     -- end
 end
 

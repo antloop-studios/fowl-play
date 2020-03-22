@@ -1,4 +1,4 @@
-e.player = { "position", "size", "player", "sprite" }
+e.player = { "position", "size", "color", "player" }
 
 s.player = { "position", "size", "player" }
 s.player.update = function(i, position, size, player)
@@ -6,9 +6,20 @@ s.player.update = function(i, position, size, player)
 
     local x, y = game.input:get("move")
 
-    if x ~= 0 or y ~= 0 then
-        game.server:send(ser.s({event='move', x=x, y=y}))
+    local event = host:service()
+    while event do
+        if event.type == "receive" then
+            local d = ser.d(event.data)[1]
+            if d.uid then
+                player.uid = d.uid
+            else
+                game.entities = d
+            end
+        end
+        event = host:service()
     end
+
+    server:send(ser.s({ player=player, move = {x,y} }))
 
     -- local len = (x^2 + y^2)^0.5
     -- if len == 0 then
