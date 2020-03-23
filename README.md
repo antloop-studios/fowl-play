@@ -3,10 +3,10 @@ MMORTSFPS Survival Battle royale
 
 # Controls
 
-Esc - exit the game
-W,A,S,D - movement
-Mouse - aim your attack
-Mouse Left Click - punch with all your might
+- Esc - exit the game
+- W,A,S,D - movement
+- Mouse - aim your attack
+- Mouse Left Click - punch with all your might
 
 # Gameplay
 
