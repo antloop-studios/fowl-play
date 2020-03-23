@@ -75,7 +75,7 @@ function game:enter()
         warning = {love.audio.newSource("res/audio/warning/01.wav", "static")},
         win = {love.audio.newSource("res/audio/win/01.wav", "static")},
         ding = {love.audio.newSource("res/audio/ding/01.wav", "static")},
-        woosh = {love.audio.newSource("res/audio/woosh/01.flac", "static")}
+        woosh = {love.audio.newSource("res/audio/woosh/01.mp3", "static")}
     }
 
     self.audio.ambient:setLooping(true)
